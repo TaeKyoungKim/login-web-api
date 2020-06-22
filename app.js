@@ -7,6 +7,7 @@ var mongoose = require(`mongoose`)
 mongoose.Promise = global.Promise
 require('./output')
 var dotenv = require('dotenv')
+var apiRouter = require('./routes/routes')
 dotenv.config()
 var password = process.env.PASSWORD
 const MONGO_URL = `mongodb+srv://root:${password}@cluster0-zlhhs.mongodb.net/mydb?retryWrites=true&w=majority`
@@ -19,15 +20,10 @@ app.set('view engine' ,'ejs')
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 
-app.get('/',function(req,res){
-    // console.log(req)
-    res.json({"Kim":"Hello World"})
-})
+//정적파일 등록
+// app.use(express.static(__dirname+'/public'))
 
-app.get('/data',function(req,res){
-    console.log(req)
-    res.json({"address":"서울시 마포구 백범로 18"})
-})
+app.use('/', apiRouter)
 
 var port = process.env.PORT || 3000
 //listen(port , url , backlog , callback)
